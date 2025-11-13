@@ -1,24 +1,3 @@
-// Starfield Shader - Ghostty Compatible
-// Animated starfield effect for terminal backgrounds
-
-#ifdef GL_ES
-precision mediump float;
-#endif
-
-// P5.js provides these
-varying vec2 vTexCoord;
-
-// Ghostty-compatible uniforms
-uniform float iTime;
-uniform vec2 iResolution;
-uniform sampler2D iChannel0;
-
-// ============================================
-// GHOSTTY SHADER CODE STARTS HERE
-// Everything below can be copied to Ghostty
-// (remember to change texture2D to texture)
-// ============================================
-
 // transparent background
 const bool transparent = false;
 
@@ -140,7 +119,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
     }
 
     // Sample the terminal screen texture including alpha channel
-    vec4 terminalColor = texture2D(iChannel0, uv);
+    vec4 terminalColor = texture(iChannel0, uv);
 
     if (transparent) {
         col += terminalColor.rgb;
@@ -153,14 +132,4 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 
     // Apply terminal's alpha to control overall opacity
     fragColor = vec4(blendedColor, terminalColor.a);
-}
-
-// ============================================
-// GHOSTTY SHADER CODE ENDS HERE
-// ============================================
-
-// P5.js main function - converts to Ghostty format
-void main() {
-    vec2 fragCoord = vTexCoord * iResolution;
-    mainImage(gl_FragColor, fragCoord);
 }
